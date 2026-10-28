@@ -1,0 +1,12 @@
+.env
+.next/
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+backend/.venv/
+backend/uploads/
+backend/.pytest_cache/
+backend/.ruff_cache/
+coverage/
+dist/

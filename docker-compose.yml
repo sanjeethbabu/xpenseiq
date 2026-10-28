@@ -1,0 +1,34 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: .env
+    environment:
+      TEMP_UPLOAD_DIR: /app/backend/uploads
+    volumes:
+      - uploads:/app/backend/uploads
+    ports:
+      - "8000:8000"
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "app.worker"]
+    env_file: .env
+    environment:
+      TEMP_UPLOAD_DIR: /app/backend/uploads
+    volumes:
+      - uploads:/app/backend/uploads
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000/api/v1}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+volumes:
+  uploads:
